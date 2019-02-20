@@ -2,17 +2,16 @@ package com.impltech.testoauth.service;
 
 import com.impltech.testoauth.domain.User;
 import com.impltech.testoauth.domain.Wallet;
-import com.impltech.testoauth.exception.LimitException;
 import com.impltech.testoauth.repository.UserRepository;
-import com.impltech.testoauth.repository.WalletRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +19,7 @@ import java.util.Optional;
  * Created by dima.
  * Creation date 14.02.19.
  */
-@Service("userDetailsService")
+@Service
 @Transactional
 public class UserService implements UserDetailsService {
 
@@ -28,11 +27,8 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final WalletRepository walletRepository;
-
-    public UserService(UserRepository userRepository, WalletRepository walletRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.walletRepository = walletRepository;
     }
 
     /**
@@ -46,6 +42,11 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    /**
+     * Get one user by id.
+     *
+     * @return the entity
+     */
     @Transactional(readOnly = true)
     public List<User> findAll() {
         log.debug("Request to get all Users");
@@ -74,29 +75,24 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username);
-    }
-
-    @Transactional
-    public Wallet addWallet(Long userId, Wallet wallet) {
-        List<Wallet> userWallets = userRepository.getAllUsersWallets(userId);
-        User user = userRepository.getOne(userId);
-
-        if (userWallets.size() < 3) {
-            Wallet savedWallet = walletRepository.save(wallet);
-            user.getWallets().add(savedWallet);
-            userRepository.save(user);
-            return savedWallet;
-        } else {
-            throw new LimitException("You can create only 3 different wallets!");
-        }
-    }
-
+    /**
+     * Get allUsersWallets by id.
+     */
     @Transactional
     public List<Wallet> getAllUserWallets(Long userId) {
         return userRepository.getAllUsersWallets(userId);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username or password.");
+        }
+        return new org.springframework.security.core.userdetails.User(String.valueOf(user.getId()), user.getPassword(), getAuthority());
+    }
+
+    private List<SimpleGrantedAuthority> getAuthority() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
 }

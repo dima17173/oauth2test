@@ -1,17 +1,13 @@
 package com.impltech.testoauth.web.rest;
 
 import com.impltech.testoauth.domain.User;
-import com.impltech.testoauth.domain.Wallet;
 import com.impltech.testoauth.service.UserService;
-import com.impltech.testoauth.service.WalletService;
 import com.impltech.testoauth.web.rest.util.HeaderUtil;
 import io.micrometer.core.annotation.Timed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -31,11 +27,8 @@ public class UserResource {
 
     private final UserService userService;
 
-    private final WalletService walletService;
-
-    public UserResource(UserService userService, WalletService walletService) {
+    public UserResource(UserService userService) {
         this.userService = userService;
-        this.walletService = walletService;
     }
 
     /**
@@ -128,41 +121,4 @@ public class UserResource {
     public ResponseEntity<?> getUserWallets(@PathVariable("id") Long userId) {
         return ResponseEntity.ok().body(userService.getAllUserWallets(userId));
     }
-
-    /**
-     * PUT  /amount : Updates balance after add.
-     */
-    @PutMapping("/{id}/amount/add")
-    public ResponseEntity<?> addBalance(@PathVariable("id") Long userId,
-                                        @RequestParam("amount") Double amount) {
-        List<Wallet> userWallets = userService.getAllUserWallets(userId);
-        Wallet wallet = userWallets.get(0);
-        walletService.add(wallet.getId(), amount);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    /**
-     * PUT  /amount : Updates balance after reduce.
-     */
-    @PutMapping("/{id}/amount/reduce")
-    public ResponseEntity<?> reduceBalance(@PathVariable("id") Long userId,
-                                           @RequestParam("amount") Double amount) {
-        List<Wallet> userWallets = userService.getAllUserWallets(userId);
-        Wallet wallet = userWallets.get(0);
-        walletService.subtract(wallet.getId(), amount);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PutMapping("/{fromId}/replenish/{toId}")
-    public ResponseEntity<?> replenishUserBalance(@PathVariable("fromId") Long fromId,
-                                                    @RequestParam("amount") Double amount,
-                                                    @PathVariable("toId") Long toId) {
-        List<Wallet> fromWallets = userService.getAllUserWallets(fromId);
-        Wallet fromWallet = fromWallets.get(0);
-        List<Wallet> toWallets = userService.getAllUserWallets(toId);
-        Wallet toWallet = toWallets.get(0);
-        boolean isReplenished = walletService.replenishBalance(fromWallet.getId(), toWallet.getId(), amount);
-        return ResponseEntity.ok().body(isReplenished);
-    }
-
 }

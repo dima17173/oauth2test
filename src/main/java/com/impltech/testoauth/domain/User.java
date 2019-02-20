@@ -1,11 +1,8 @@
 package com.impltech.testoauth.domain;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,11 +11,11 @@ import java.util.Set;
  * Creation date 14.02.19.
  */
 @Entity
-@Table(name = "user")
-public class User implements Serializable, UserDetails {
+@Table(name = "users")
+public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "username")
@@ -27,7 +24,11 @@ public class User implements Serializable, UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column
+    private boolean enabled;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     private Set<Wallet> wallets = new HashSet<>();
 
     public User() {
@@ -50,33 +51,8 @@ public class User implements Serializable, UserDetails {
         return username;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
     }
 
     public String getPassword() {
@@ -93,6 +69,14 @@ public class User implements Serializable, UserDetails {
 
     public void setWallets(Set<Wallet> wallets) {
         this.wallets = wallets;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     @Override

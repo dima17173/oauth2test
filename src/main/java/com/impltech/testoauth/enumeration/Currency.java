@@ -6,23 +6,28 @@ package com.impltech.testoauth.enumeration;
  */
 public enum Currency {
 
-    UAH(1, "uah"),
-    USD(2, "usd"),
-    EUR(3, "eur");
+    UAH("uah"),
+    USD("usd"),
+    EUR("eur");
 
-    private final Integer typeKey;
-    private final String typeValue;
+    private final String currency;
 
-    Currency(Integer typeKey, String typeValue) {
-        this.typeKey = typeKey;
-        this.typeValue = typeValue;
+    Currency(String currency) {
+        this.currency = currency;
     }
 
-    public Integer getTypeKey() {
-        return typeKey;
+    public String getCurrency() {
+        return currency;
     }
 
-    public String getTypeValue() {
-        return typeValue;
+    public static Currency getValue(String currency) {
+        switch (currency) {
+            case "uah":
+                return UAH;
+            case "usd":
+                return USD;
+            default:
+                return EUR;
+        }
     }
 }

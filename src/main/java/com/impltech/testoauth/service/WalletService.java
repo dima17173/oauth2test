@@ -1,13 +1,15 @@
 package com.impltech.testoauth.service;
 
+import com.impltech.testoauth.domain.User;
 import com.impltech.testoauth.domain.Wallet;
-import com.impltech.testoauth.exception.LowBalanceException;
+import com.impltech.testoauth.exception.LimitException;
+import com.impltech.testoauth.repository.UserRepository;
 import com.impltech.testoauth.repository.WalletRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
+import java.util.List;
 
 /**
  * Created by dima.
@@ -21,39 +23,42 @@ public class WalletService {
 
     private final WalletRepository walletRepository;
 
-    public WalletService(WalletRepository walletRepository) {
+    private final UserRepository userRepository;
+
+    public WalletService(WalletRepository walletRepository, UserRepository userRepository) {
         this.walletRepository = walletRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
     public boolean replenishBalance(Long fromWallet, Long toWallet, Double amount) {
-        Assert.notNull(amount, "amount can't be null");
-            try {
-                subtract(fromWallet, amount);
-                add(toWallet, amount);
-                return true;
-            } catch (Exception e) {
-                return false;
-            }
-        }
+        subtract(fromWallet, amount);
+        add(toWallet, amount);
+        return true;
+    }
 
+    /**
+     * Add balance
+     */
     @Transactional
     public void add(Long userWalletId, Double amount) {
         if (amount != null && amount > 0) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
-            userWallet.setAmount(userWallet.getAmount() + amount);
+            Double currentAmount = userWallet.getAmount();
+            currentAmount += amount;
+            userWallet.setAmount(currentAmount);
             walletRepository.save(userWallet);
         }
     }
 
+    /**
+     * Subtract balance
+     */
     @Transactional
     public void subtract(Long userWalletId, Double amount) {
         if (amount != null && amount > 0) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
             Double currentAmount = userWallet.getAmount();
-            if (currentAmount < amount) {
-                throw new LowBalanceException(String.format("Low balance", currentAmount));
-            }
             currentAmount -= amount;
             userWallet.setAmount(currentAmount);
             walletRepository.save(userWallet);
@@ -68,5 +73,20 @@ public class WalletService {
     public void delete(Long id) {
         log.debug("Request to delete Wallet : {}", id);
         walletRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Wallet addWallet(Long userId, Wallet wallet) {
+        List<Wallet> userWallets = userRepository.getAllUsersWallets(userId);
+        User user = userRepository.getOne(userId);
+
+        if (userWallets.size() < 3) {
+            Wallet savedWallet = walletRepository.save(wallet);
+            user.getWallets().add(savedWallet);
+            userRepository.save(user);
+            return savedWallet;
+        } else {
+            throw new LimitException("You can create only 3 wallets");
+        }
     }
 }

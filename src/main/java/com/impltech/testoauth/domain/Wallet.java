@@ -1,7 +1,7 @@
 package com.impltech.testoauth.domain;
 
-import com.impltech.testoauth.Enum.Currency;
 
+import com.impltech.testoauth.enumeration.Currency;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class Wallet implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "currency")

@@ -17,7 +17,7 @@ public class HeaderUtil {
     private HeaderUtil() {
     }
 
-    public static HttpHeaders createAlert(String message, String param) {
+    private static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-flowersApp-alert", message);
         headers.add("X-flowersApp-params", param);
@@ -44,6 +44,4 @@ public class HeaderUtil {
         headers.add("defaultMessage", defaultMessage);
         return headers;
     }
-
-
 }
