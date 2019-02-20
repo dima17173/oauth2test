@@ -20,14 +20,4 @@ public enum Currency {
         return currency;
     }
 
-    public static Currency getValue(String currency) {
-        switch (currency) {
-            case "uah":
-                return UAH;
-            case "usd":
-                return USD;
-            default:
-                return EUR;
-        }
-    }
 }
