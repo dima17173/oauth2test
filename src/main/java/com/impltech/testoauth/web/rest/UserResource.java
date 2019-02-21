@@ -111,14 +111,4 @@ public class UserResource {
         userService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * GET  /users/wallets : get the "id" users/wallets.
-     *
-     * @return the ResponseEntity with status 200 (OK) and with body the users/wallets, or with status 404 (Not Found)
-     */
-    @GetMapping("/{id}/wallets")
-    public ResponseEntity<?> getUserWallets(@PathVariable("id") Long userId) {
-        return ResponseEntity.ok().body(userService.getAllUserWallets(userId));
-    }
 }

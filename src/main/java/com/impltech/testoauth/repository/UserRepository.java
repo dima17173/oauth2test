@@ -15,9 +15,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
 
-    @Query(value = "SELECT w.id, w.amount, w.currency, w.user_id FROM wallet w " +
-            "LEFT JOIN users u ON w.user_id = u.id " +
-            "WHERE u.id = :userId", nativeQuery = true)
-    List<Wallet> getAllUsersWallets(@Param("userId") Long userId);
-
 }

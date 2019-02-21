@@ -1,7 +1,6 @@
 package com.impltech.testoauth.service;
 
 import com.impltech.testoauth.domain.User;
-import com.impltech.testoauth.domain.Wallet;
 import com.impltech.testoauth.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,14 +72,6 @@ public class UserService implements UserDetailsService {
     public void delete(Long id) {
         log.debug("Request to delete Users : {}", id);
         userRepository.deleteById(id);
-    }
-
-    /**
-     * Get allUsersWallets by id.
-     */
-    @Transactional
-    public List<Wallet> getAllUserWallets(Long userId) {
-        return userRepository.getAllUsersWallets(userId);
     }
 
     @Override

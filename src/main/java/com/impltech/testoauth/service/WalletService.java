@@ -42,7 +42,7 @@ public class WalletService {
      */
     @Transactional
     public void add(Long userWalletId, Double amount) {
-        if (amount != null && amount > 0) {
+        if (amount != null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
             Double currentAmount = userWallet.getAmount();
             currentAmount += amount;
@@ -56,7 +56,7 @@ public class WalletService {
      */
     @Transactional
     public void subtract(Long userWalletId, Double amount) {
-        if (amount != null && amount > 0) {
+        if (amount != null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
             Double currentAmount = userWallet.getAmount();
             currentAmount -= amount;
@@ -77,16 +77,24 @@ public class WalletService {
 
     @Transactional
     public Wallet addWallet(Long userId, Wallet wallet) {
-        List<Wallet> userWallets = userRepository.getAllUsersWallets(userId);
+        List<Wallet> userWallets = walletRepository.getAllUsersWallets(userId);
         User user = userRepository.getOne(userId);
 
         if (userWallets.size() < 3) {
-            Wallet savedWallet = walletRepository.save(wallet);
-            user.getWallets().add(savedWallet);
+            Wallet newWallet = walletRepository.save(wallet);
+            user.getWallets().add(newWallet);
             userRepository.save(user);
-            return savedWallet;
+            return newWallet;
         } else {
             throw new LimitException("You can create only 3 wallets");
         }
+    }
+
+    /**
+     * Get allUsersWallets by id.
+     */
+    @Transactional
+    public List<Wallet> getAllUserWallets(Long userId) {
+        return walletRepository.getAllUsersWallets(userId);
     }
 }

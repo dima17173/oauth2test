@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.micrometer.core.annotation.Timed;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 /**
  * Created by dima.
  * Creation date 14.02.19.
@@ -29,16 +32,10 @@ public class WalletResource {
         this.walletService = walletService;
     }
 
-    /**
-     * POST  /wallet : Create a new wallet.
-     *
-     * @param userId the wallet to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the wallet has already an ID
-     */
     @PostMapping("/{id}/wallet/new")
     public ResponseEntity<?> createWallet(@PathVariable("id") Long userId, @RequestBody Wallet wallet) throws LimitException {
-        Wallet createdWallet = walletService.addWallet(userId, wallet);
-        return ResponseEntity.ok().body(createdWallet);
+        Wallet result = walletService.addWallet(userId, wallet);
+        return ResponseEntity.ok().body(result);
     }
 
     /**
@@ -79,5 +76,16 @@ public class WalletResource {
     public ResponseEntity<?> reduceBalance(@PathVariable("id") Long walletId, @RequestParam("amount") Double amount) {
         walletService.subtract(walletId, amount);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * GET  /users/wallets : get the "id" users/wallets.
+     *
+     * @return the ResponseEntity with status 200 (OK) and with body the users/wallets, or with status 404 (Not Found)
+     */
+    @GetMapping("/{id}/wallets")
+    @Timed
+    public ResponseEntity<?> getUserWallets(@PathVariable("id") Long userId) {
+        return ResponseEntity.ok().body(walletService.getAllUserWallets(userId));
     }
 }

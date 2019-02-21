@@ -55,17 +55,19 @@ CREATE TABLE authorities (
 
 CREATE TABLE wallet
 (
-  id BIGINT(20)       NOT NULL,
+  id BIGINT(20) NOT NULL,
   amount   DOUBLE       NULL,
   currency VARCHAR(255) NULL,
-  user_id  BIGINT       NULL
+  users_id  BIGINT       NULL
 );
 CREATE INDEX FKbs4ogwiknsup4rpw8d47qw9dx
-  ON wallet (user_id);
+  ON wallet (users_id);
 
 INSERT INTO users (id, enabled, username, password) VALUES (1, true,'dimon', '$2a$04$I9Q2sDc4QGGg5WNTLmsz0.fvGv3OjoZyj81PrSFyGOqMphqfS2qKu');
 
-INSERT INTO wallet (id, amount, currency, user_id) VALUES (1, 22.2, 'UAH', 1);
+INSERT INTO wallet (id, amount, currency, users_id) VALUES (1, 22.2, 'UAH', 1);
+INSERT INTO wallet (id, amount, currency, users_id) VALUES (1, 23.2, 'UAH', 1);
+INSERT INTO wallet (id, amount, currency, users_id) VALUES (1, 24.2, 'UAH', 1);
 
 INSERT INTO oauth_client_details VALUES('dima','resource_id', 'secret', 'read,write', 'password,refresh_token', 'http://127.0.0.1', 'ROLE_ADMIN,ROLE_USER', 7200, 0, NULL, 'true');
 
