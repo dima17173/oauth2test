@@ -11,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.micrometer.core.annotation.Timed;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 /**
  * Created by dima.
  * Creation date 14.02.19.

@@ -19,14 +19,14 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "username")
+    @Column(name = "username")
     @Size(min = 5, max = 20)
     private String username;
 
-//    @Column(name = "password")
+    @Column(name = "password")
     private String password;
 
-//    @Column
+    @Column
     private boolean enabled;
 
     @OneToMany(mappedBy = "user")

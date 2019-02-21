@@ -17,11 +17,11 @@ public class Wallet implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "currency")
+    @Column(name = "currency")
     @Enumerated(value = EnumType.STRING)
     private Currency currency;
 
-//    @Column(name = "amount")
+    @Column(name = "amount")
     private Double amount;
 
     @ManyToOne(fetch = FetchType.EAGER)

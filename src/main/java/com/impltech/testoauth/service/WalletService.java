@@ -30,6 +30,9 @@ public class WalletService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Replenish balance from one wallet to another wallet
+     */
     @Transactional
     public boolean replenishBalance(Long fromWallet, Long toWallet, Double amount) {
         subtract(fromWallet, amount);
@@ -75,6 +78,9 @@ public class WalletService {
         walletRepository.deleteById(id);
     }
 
+    /**
+     * Add new wallet.
+     */
     @Transactional
     public Wallet addWallet(Long userId, Wallet wallet) {
         List<Wallet> userWallets = walletRepository.getAllUsersWallets(userId);
@@ -91,7 +97,7 @@ public class WalletService {
     }
 
     /**
-     * Get allUsersWallets by id.
+     * Get allUsersWallets by userId.
      */
     @Transactional
     public List<Wallet> getAllUserWallets(Long userId) {

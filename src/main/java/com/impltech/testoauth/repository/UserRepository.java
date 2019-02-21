@@ -1,11 +1,7 @@
 package com.impltech.testoauth.repository;
 
 import com.impltech.testoauth.domain.User;
-import com.impltech.testoauth.domain.Wallet;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import java.util.List;
 
 /**
  * Created by dima.
