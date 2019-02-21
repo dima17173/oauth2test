@@ -53,7 +53,7 @@ public class WalletResource {
      * PUT  /amount : Updates balance after replenish.
      */
     @PutMapping("/{fromId}/replenish/{toId}")
-    public ResponseEntity<?> replenishUserBalance(@PathVariable("fromId") Long fromId, @RequestParam("amount") Double amount, @PathVariable("toId") Long toId) {
+    public ResponseEntity<?> replenishBalance(@PathVariable("fromId") Long fromId, @RequestParam("amount") Double amount, @PathVariable("toId") Long toId) {
         return ResponseEntity.ok().body(walletService.replenishBalance(fromId, toId, amount));
     }
 

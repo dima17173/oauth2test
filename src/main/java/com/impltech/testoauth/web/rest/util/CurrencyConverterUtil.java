@@ -4,6 +4,7 @@ import com.impltech.testoauth.config.EurValue;
 import com.impltech.testoauth.config.UahValue;
 import com.impltech.testoauth.config.UsdValue;
 import com.impltech.testoauth.enumeration.Currency;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,6 +20,7 @@ public class CurrencyConverterUtil {
 
     private final UahValue uahValue;
 
+    @Autowired
     public CurrencyConverterUtil(EurValue eurValue, UsdValue usdValue, UahValue uahValue) {
         this.eurValue = eurValue;
         this.usdValue = usdValue;

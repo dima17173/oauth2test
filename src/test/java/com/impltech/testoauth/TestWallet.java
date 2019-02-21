@@ -3,18 +3,18 @@ package com.impltech.testoauth;
 import com.impltech.testoauth.domain.User;
 import com.impltech.testoauth.domain.Wallet;
 import com.impltech.testoauth.enumeration.Currency;
+import com.impltech.testoauth.repository.WalletRepository;
 import com.impltech.testoauth.service.WalletService;
+import com.impltech.testoauth.web.rest.WalletResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
+import static junit.framework.TestCase.*;
 
 /**
  * Created by dima.
@@ -26,16 +26,14 @@ import static junit.framework.TestCase.assertTrue;
 @AutoConfigureMockMvc
 public class TestWallet {
 
-    @Autowired
+    @Mock
     private WalletService walletService;
 
-    public Wallet createWallet() {
-        Wallet wallet = new Wallet();
-        wallet.setAmount(22.2);
-        wallet.setCurrency(Currency.UAH);
-        wallet.setUser(new User("dima", "pass"));
-        return wallet;
-    }
+    @Mock
+    private WalletResource walletResource;
+
+    @Mock
+    private WalletRepository walletRepository;
 
     @Before
     public void setUp() {
@@ -44,16 +42,17 @@ public class TestWallet {
     @Test
     public void addBalance() {
 
-        Double currAmount = 20.00;
+        Double walletAmount = 20.00;
+        Double amountToAdd = 30.00;
 
         Wallet wallet1 = new Wallet();
         wallet1.setId(1L);
-        wallet1.setAmount(currAmount);
+        wallet1.setAmount(walletAmount);
         wallet1.setCurrency(Currency.UAH);
         wallet1.setUser(new User("dima", "pass"));
 
-        walletService.add(1L, 33.3);
-        Double amountAfterAdd = currAmount + 33.3;
-        assertEquals(currAmount, amountAfterAdd);
+        walletResource.addBalance(wallet1.getId(), amountToAdd);
+        Double currentAmount = wallet1.getAmount();
+        assertEquals(50.0, currentAmount);
     }
 }

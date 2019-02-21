@@ -47,11 +47,15 @@ public class WalletService {
     public void add(Long userWalletId, Double amount) {
         if (amount != null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
-            Double currentAmount = userWallet.getAmount();
-            currentAmount += amount;
-            userWallet.setAmount(currentAmount);
+            addBalance(amount, userWallet);
             walletRepository.save(userWallet);
         }
+    }
+
+    private void addBalance(Double amount, Wallet userWallet) {
+        Double currentAmount = userWallet.getAmount();
+        currentAmount += amount;
+        userWallet.setAmount(currentAmount);
     }
 
     /**
@@ -61,11 +65,15 @@ public class WalletService {
     public void subtract(Long userWalletId, Double amount) {
         if (amount != null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
-            Double currentAmount = userWallet.getAmount();
-            currentAmount -= amount;
-            userWallet.setAmount(currentAmount);
+            subtractBalance(amount, userWallet);
             walletRepository.save(userWallet);
         }
+    }
+
+    private void subtractBalance(Double amount, Wallet userWallet) {
+        Double currentAmount = userWallet.getAmount();
+        currentAmount -= amount;
+        userWallet.setAmount(currentAmount);
     }
 
     /**
