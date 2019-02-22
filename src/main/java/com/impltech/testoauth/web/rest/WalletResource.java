@@ -29,7 +29,7 @@ public class WalletResource {
         this.walletService = walletService;
     }
 
-    @PostMapping("/{id}/wallet/new")
+    @PostMapping("/{id}/wallet")
     public ResponseEntity<?> createWallet(@PathVariable("id") Long userId, @RequestBody Wallet wallet) throws LimitException {
         Wallet result = walletService.addWallet(userId, wallet);
         return ResponseEntity.ok().body(result);

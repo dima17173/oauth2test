@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import java.util.Optional;
  * Creation date 14.02.19.
  */
 @Service
-@Transactional
 public class UserService implements UserDetailsService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
@@ -46,7 +44,6 @@ public class UserService implements UserDetailsService {
      *
      * @return the entity
      */
-    @Transactional(readOnly = true)
     public List<User> findAll() {
         log.debug("Request to get all Users");
         return userRepository.findAll();
@@ -58,7 +55,6 @@ public class UserService implements UserDetailsService {
      * @param id the id of the entity
      * @return the entity
      */
-    @Transactional(readOnly = true)
     public Optional<User> findOne(Long id) {
         log.debug("Request to get Users : {}", id);
         return userRepository.findById(id);

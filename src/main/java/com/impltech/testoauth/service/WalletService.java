@@ -16,7 +16,6 @@ import java.util.List;
  * Creation date 14.02.19.
  */
 @Service
-@Transactional
 public class WalletService {
 
     private final Logger log = LoggerFactory.getLogger(WalletService.class);

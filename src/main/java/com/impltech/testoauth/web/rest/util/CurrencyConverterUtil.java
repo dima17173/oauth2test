@@ -4,7 +4,6 @@ import com.impltech.testoauth.config.EurValue;
 import com.impltech.testoauth.config.UahValue;
 import com.impltech.testoauth.config.UsdValue;
 import com.impltech.testoauth.enumeration.Currency;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,20 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class CurrencyConverterUtil {
 
-    private final EurValue eurValue;
+    private static EurValue eurValue;
 
-    private final UsdValue usdValue;
+    private static UsdValue usdValue;
 
-    private final UahValue uahValue;
+    private static UahValue uahValue;
 
-    @Autowired
-    public CurrencyConverterUtil(EurValue eurValue, UsdValue usdValue, UahValue uahValue) {
-        this.eurValue = eurValue;
-        this.usdValue = usdValue;
-        this.uahValue = uahValue;
-    }
-
-    private Double convertFromUah(Double amount, Currency fromCurrency, Currency toCurrency) {
+    public static Double convertFromUah(Double amount, Currency fromCurrency, Currency toCurrency) {
         Double result = 0.0;
         if (fromCurrency.getCurrency().equals("uah")) {
             if (toCurrency.getCurrency().equals("usd")) {
@@ -39,7 +31,7 @@ public class CurrencyConverterUtil {
         return result;
     }
 
-    private Double convertFromUsd(Double amount, Currency fromCurrency, Currency toCurrency) {
+    public static Double convertFromUsd(Double amount, Currency fromCurrency, Currency toCurrency) {
         Double result = 0.0;
         if (fromCurrency.getCurrency().equals("usd")) {
             if (toCurrency.getCurrency().equals("eur")) {
@@ -51,7 +43,7 @@ public class CurrencyConverterUtil {
         return result;
     }
 
-    private Double convertFromEur(Double amount, Currency fromCurrency, Currency toCurrency) {
+    public static Double convertFromEur(Double amount, Currency fromCurrency, Currency toCurrency) {
         Double result = 0.0;
         if (fromCurrency.getCurrency().equals("eur")) {
             if (toCurrency.getCurrency().equals("usd")) {
