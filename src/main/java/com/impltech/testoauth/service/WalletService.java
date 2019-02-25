@@ -90,18 +90,16 @@ public class WalletService {
      */
     @Transactional
     public Wallet addWallet(Long userId, Wallet wallet) {
-        if (userId != null && wallet != null) {
-            List<Wallet> userWallets = walletRepository.getAllUsersWalletsByUserId(userId);
-            User user = userRepository.getOne(userId);
+        List<Wallet> userWallets = walletRepository.getAllUsersWalletsByUserId(userId);
+        User user = userRepository.getOne(userId);
 
-            if (userWallets.size() < 3) {
-                Wallet newWallet = walletRepository.save(wallet);
-                user.getWallets().add(newWallet);
-                userRepository.save(user);
-                return newWallet;
-            } else {
-                throw new LimitException("You can create only 3 wallets");
-            }
+        if (userWallets.size() < 3) {
+            Wallet newWallet = walletRepository.save(wallet);
+            user.getWallets().add(newWallet);
+            userRepository.save(user);
+            return newWallet;
+        } else {
+            throw new LimitException("You can create only 3 wallets");
         }
     }
 
