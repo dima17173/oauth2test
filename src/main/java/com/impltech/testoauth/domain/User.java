@@ -12,10 +12,7 @@ import java.util.Set;
  * Created by dima.
  * Creation date 14.02.19.
  */
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
 @Entity
 @Table(name = "users")

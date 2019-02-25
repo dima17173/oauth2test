@@ -12,15 +12,15 @@ public class HeaderUtil {
 
     private static final Logger log = LoggerFactory.getLogger(HeaderUtil.class);
 
-    private static final String APPLICATION_NAME = "flowersApp";
+    private static final String APPLICATION_NAME = "testOauthApp";
 
     private HeaderUtil() {
     }
 
     private static HttpHeaders createAlert(String message, String param) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-flowersApp-alert", message);
-        headers.add("X-flowersApp-params", param);
+        headers.add("X-testOauthApp-alert", message);
+        headers.add("X-testOauthApp-params", param);
         return headers;
     }
 
@@ -39,8 +39,8 @@ public class HeaderUtil {
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity processing failed, {}", defaultMessage);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-flowersApp-error", "error." + errorKey);
-        headers.add("X-flowersApp-params", entityName);
+        headers.add("X-testOauthApp-error", "error." + errorKey);
+        headers.add("X-testOauthApp-params", entityName);
         headers.add("defaultMessage", defaultMessage);
         return headers;
     }

@@ -76,4 +76,4 @@ INSERT INTO oauth_client_details VALUES('dima','resource_id', 'secret', 'read,wr
 INSERT INTO authorities (username, authority) VALUES('dimon','ROLE_ADMIN');
 
 
--- dimon / password
+-- dimon / password: password

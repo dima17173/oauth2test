@@ -9,11 +9,7 @@ import java.io.Serializable;
  * Created by dima.
  * Creation date 14.02.19.
  */
-@Getter
-@Setter
-@ToString
-@EqualsAndHashCode
-@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "wallet")
 public class Wallet implements Serializable {
@@ -36,5 +32,8 @@ public class Wallet implements Serializable {
     public Wallet(Currency currency, Double amount) {
         this.currency = currency;
         this.amount = amount;
+    }
+
+    public Wallet() {
     }
 }

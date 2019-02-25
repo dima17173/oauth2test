@@ -44,7 +44,7 @@ public class WalletService {
      */
     @Transactional
     public void add(Long userWalletId, Double amount) {
-        if (amount != null) {
+        if (amount != null && userWalletId !=null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
             addBalance(amount, userWallet);
             walletRepository.save(userWallet);
@@ -62,7 +62,7 @@ public class WalletService {
      */
     @Transactional
     public void subtract(Long userWalletId, Double amount) {
-        if (amount != null) {
+        if (amount != null && userWalletId !=null) {
             Wallet userWallet = walletRepository.getOne(userWalletId);
             subtractBalance(amount, userWallet);
             walletRepository.save(userWallet);
@@ -90,7 +90,7 @@ public class WalletService {
      */
     @Transactional
     public Wallet addWallet(Long userId, Wallet wallet) {
-        List<Wallet> userWallets = walletRepository.getAllUsersWallets(userId);
+        List<Wallet> userWallets = walletRepository.getAllUsersWalletsByUserId(userId);
         User user = userRepository.getOne(userId);
 
         if (userWallets.size() < 3) {
@@ -108,6 +108,6 @@ public class WalletService {
      */
     @Transactional
     public List<Wallet> getAllUserWallets(Long userId) {
-        return walletRepository.getAllUsersWallets(userId);
+        return walletRepository.getAllUsersWalletsByUserId(userId);
     }
 }

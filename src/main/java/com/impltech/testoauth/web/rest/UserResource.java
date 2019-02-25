@@ -43,7 +43,7 @@ public class UserResource {
     public ResponseEntity<User> createUser(@RequestBody User user) throws URISyntaxException {
         log.debug("REST request to save User : {}", user);
         if (user.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new user cannot already have an ID")).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "User with this id already exist")).body(null);
         }
         User result = userService.create(user);
         return ResponseEntity.created(new URI("/api/user/" + result.getId()))
@@ -57,7 +57,6 @@ public class UserResource {
      * @param user the user to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated user,
      * or with status 400 (Bad Request) if the user is not valid,
-     * or with status 500 (Internal Server Error) if the user couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/user")
