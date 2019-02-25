@@ -9,9 +9,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by dima.
@@ -35,8 +35,8 @@ public class UserService implements UserDetailsService {
      * @return the persisted entity
      */
     public User create(User user) {
-        log.debug("Request to save User : {}", user);
-        return userRepository.save(user);
+            log.debug("Request to save User : {}", user);
+            return userRepository.save(user);
     }
 
     /**
@@ -56,8 +56,11 @@ public class UserService implements UserDetailsService {
      * @return the entity
      */
     public User findOne(Long id) {
-        log.debug("Request to get Users : {}", id);
-        return userRepository.getOne(id);
+        if (id != null) {
+            log.debug("Request to get Users : {}", id);
+            return userRepository.getOne(id);
+        }
+        return null;
     }
 
     /**
@@ -66,8 +69,10 @@ public class UserService implements UserDetailsService {
      * @param id the id of the entity
      */
     public void delete(Long id) {
-        log.debug("Request to delete Users : {}", id);
-        userRepository.deleteById(id);
+        if (id != null) {
+            log.debug("Request to delete Users : {}", id);
+            userRepository.deleteById(id);
+        }
     }
 
     @Override
