@@ -14,9 +14,9 @@ import java.util.Set;
  */
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode
 @ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
@@ -38,9 +38,4 @@ public class User implements Serializable {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Wallet> wallets = new HashSet<>();
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
 }

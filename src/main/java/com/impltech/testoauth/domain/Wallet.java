@@ -11,10 +11,9 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode
-@AllArgsConstructor
 @ToString
+@EqualsAndHashCode
+@NoArgsConstructor
 @Entity
 @Table(name = "wallet")
 public class Wallet implements Serializable {
@@ -33,4 +32,9 @@ public class Wallet implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="users_id")
     private User user;
+
+    public Wallet(Currency currency, Double amount) {
+        this.currency = currency;
+        this.amount = amount;
+    }
 }

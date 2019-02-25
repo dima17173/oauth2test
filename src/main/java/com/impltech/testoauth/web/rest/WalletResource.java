@@ -61,8 +61,8 @@ public class WalletResource {
      * PUT  /amount : Updates balance after add.
      */
     @PutMapping("/{id}/amount/add")
-    public ResponseEntity<?> addBalance(@PathVariable("id") Long walletId, @RequestParam("amount") Double amount) {
-        walletService.add(walletId, amount);
+    public ResponseEntity<?> addBalance(@PathVariable("id") Long id, @RequestParam("amount") Double amount) {
+        walletService.add(id, amount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -70,8 +70,8 @@ public class WalletResource {
      * PUT  /amount : Updates balance after reduce.
      */
     @PutMapping("/{id}/amount/reduce")
-    public ResponseEntity<?> reduceBalance(@PathVariable("id") Long walletId, @RequestParam("amount") Double amount) {
-        walletService.subtract(walletId, amount);
+    public ResponseEntity<?> reduceBalance(@PathVariable("id") Long id, @RequestParam("amount") Double amount) {
+        walletService.subtract(id, amount);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
