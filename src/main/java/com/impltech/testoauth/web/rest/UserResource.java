@@ -92,7 +92,7 @@ public class UserResource {
      */
     @GetMapping("/users/{id}")
     @Timed
-    public Optional<User> getUser(@PathVariable Long id) {
+    public User getUser(@PathVariable Long id) {
         log.debug("REST request to get user : {}", id);
         return userService.findOne(id);
     }

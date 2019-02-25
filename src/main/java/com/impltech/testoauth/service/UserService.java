@@ -55,9 +55,9 @@ public class UserService implements UserDetailsService {
      * @param id the id of the entity
      * @return the entity
      */
-    public Optional<User> findOne(Long id) {
+    public User findOne(Long id) {
         log.debug("Request to get Users : {}", id);
-        return userRepository.findById(id);
+        return userRepository.getOne(id);
     }
 
     /**
