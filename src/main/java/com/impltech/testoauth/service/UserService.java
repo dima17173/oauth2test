@@ -35,8 +35,8 @@ public class UserService implements UserDetailsService {
      * @return the persisted entity
      */
     public User create(User user) {
-            log.debug("Request to save User : {}", user);
-            return userRepository.save(user);
+        log.debug("Request to save User : {}", user);
+        return userRepository.save(user);
     }
 
     /**
