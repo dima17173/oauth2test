@@ -34,9 +34,12 @@ public class WalletService {
      */
     @Transactional
     public boolean replenishBalance(Long fromWallet, Long toWallet, Double amount) {
-        subtract(fromWallet, amount);
-        add(toWallet, amount);
-        return true;
+        if (fromWallet != null && toWallet != null && amount != null) {
+            subtract(fromWallet, amount);
+            add(toWallet, amount);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -81,8 +84,10 @@ public class WalletService {
      * @param id the id of the entity
      */
     public void delete(Long id) {
-        log.debug("Request to delete Wallet : {}", id);
-        walletRepository.deleteById(id);
+        if (id != null) {
+            log.debug("Request to delete Wallet : {}", id);
+            walletRepository.deleteById(id);
+        }
     }
 
     /**
@@ -90,17 +95,19 @@ public class WalletService {
      */
     @Transactional
     public Wallet addWallet(Long userId, Wallet wallet) {
-        List<Wallet> userWallets = walletRepository.getAllUsersWalletsByUserId(userId);
-        User user = userRepository.getOne(userId);
-
-        if (userWallets.size() < 3) {
-            Wallet newWallet = walletRepository.save(wallet);
-            user.getWallets().add(newWallet);
-            userRepository.save(user);
-            return newWallet;
-        } else {
-            throw new LimitException("You can create only 3 wallets");
+        if (userId != null && wallet != null) {
+            List<Wallet> userWallets = walletRepository.getAllUsersWalletsByUserId(userId);
+            if (userWallets.size() < 3) {
+                Wallet newWallet = walletRepository.save(wallet);
+                User user = userRepository.getOne(userId);
+                user.getWallets().add(newWallet);
+                userRepository.save(user);
+                return newWallet;
+            } else {
+                throw new LimitException("You can create only 3 wallets");
+            }
         }
+        return null;
     }
 
     /**
@@ -108,6 +115,9 @@ public class WalletService {
      */
     @Transactional
     public List<Wallet> getAllUserWallets(Long userId) {
-        return walletRepository.getAllUsersWalletsByUserId(userId);
+        if (userId != null) {
+            return walletRepository.getAllUsersWalletsByUserId(userId);
+        }
+        return null;
     }
 }
