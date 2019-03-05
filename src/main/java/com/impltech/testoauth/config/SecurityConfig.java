@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
             .and()
             .userDetailsService(userService)
-                .passwordEncoder(encoderBCrypt());
+                .passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -65,7 +65,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api-docs/**").permitAll();
     }
 
-    private BCryptPasswordEncoder encoderBCrypt() {
+
+    private PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
